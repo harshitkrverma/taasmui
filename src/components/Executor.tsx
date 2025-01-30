@@ -63,7 +63,7 @@ export default function Executor() {
         variant:"filled"
     }
     return (
-        <Box sx={{ maxWidth: 500 }}>
+        <Box>
             <Stepper activeStep={activeStep} orientation="vertical">
                 {steps.map((step, index) => (
                     <Step key={step.label}>

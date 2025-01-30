@@ -42,75 +42,75 @@
 import DynamicForm from '../components/commons/DynamicForm';
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-
-const formStructure = [
-    {
-        type: 'text',
-        label: 'Full Name',
-        name: 'fullName',
-        defaultValue: '',
-        required: true,
-        hint: 'Enter your full name',
-    },
-    {
-        type: 'email',
-        label: 'Email',
-        name: 'email',
-        defaultValue: '',
-        required: true,
-        hint: 'Enter your email address',
-    },
-    {
-        type: 'text',
-        label: 'Tag',
-        name: 'Tag',
-        defaultValue: '',
-        required: true,
-        hint: 'Enter your email address',
-    },
-    {
-        type: 'password',
-        label: 'Password',
-        name: 'password',
-        defaultValue: '',
-        required: true,
-        hint: 'Enter a strong password',
-    },
-    {
-        type: 'checkbox',
-        label: 'Subscribe to Newsletter',
-        name: 'subscribe',
-        defaultValue: false,
-        required: false,
-    },
-    {
-        type: 'button',
-        label: 'Submit',
-        name: 'submit',
-    },
-];
+import {executorForm, healthCheck} from "@/model/formStructure";
 
 export default function Home() {
     const handleSubmit = (formData: Record<string, any>) => {
         console.log('Form Data Submitted:', formData);
     };
+    const handleHealthCheck = async (formData: Record<string, any>) => {
+        let url = formData.clusterURL + '/auth/healthcheck.hlt'
+        console.log('Form Data Submitted:', formData.clusterURL);
+
+        console.log('Form Data Submitted:', url);
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'text/html; charset=utf-8',
+            },
+            mode: 'no-cors',
+        });
+        // const result = await response.text();
+        // console.log(result)
+        // alert(result);
+        // Check if the response is OK
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        // Get the raw HTML text
+        const htmlText = await response.text();
+        console.log('Raw HTML:', htmlText);
+
+        // Parse the HTML string into a DOM object
+        const parser = new DOMParser();
+        const htmlDoc = parser.parseFromString(htmlText, 'text/html');
+
+        // Extract data from the parsed HTML
+        const title = htmlDoc.querySelector('title')?.textContent;
+        const bodyContent = htmlDoc.querySelector('body')?.innerHTML;
+
+        console.log('Title:', title);
+        console.log('Body Content:', bodyContent);
+
+        return { title, bodyContent };
+    };
 
     return (
-        <Container maxWidth="sm">
-
+        <Container maxWidth="lg">
         <Box
             sx={{
-                          my: 4,
-
-                display: 'flex',
-                          flexDirection: 'column',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}
+                my: 4,
+                // display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}
         >
             <h1>TAAS Executor</h1>
-            <DynamicForm formStructure={formStructure} onSubmit={handleSubmit} />
+            <DynamicForm formStructure={executorForm} onSubmit={handleSubmit} />
         </Box>
+            <Box
+                sx={{
+                    my: 4,
+                    // display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+            >
+                <DynamicForm formStructure={healthCheck} onSubmit={handleHealthCheck} />
+            </Box>
         </Container>
     );
 }

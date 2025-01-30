@@ -1,7 +1,8 @@
 "use client"
 
+
 interface FormField {
-    type: 'text' | 'number' | 'email' | 'password' | 'checkbox' | 'button';
+    type: 'text' | 'number' | 'email' | 'password' | 'checkbox' | 'button' | 'select';
     label: string;
     name: string;
     defaultValue?: string | number | boolean;
@@ -10,7 +11,7 @@ interface FormField {
     options?: { label: string; value: string }[]; // For dropdowns or radio buttons
 }
 
-const formStructure: FormField[] = [
+export const executorForm: FormField[] = [
     {
         type: 'text',
         label: 'Full Name',
@@ -28,6 +29,14 @@ const formStructure: FormField[] = [
         hint: 'Enter your email address',
     },
     {
+        type: 'text',
+        label: 'Tag',
+        name: 'Tag',
+        defaultValue: '',
+        required: true,
+        hint: 'Enter your email address',
+    },
+    {
         type: 'password',
         label: 'Password',
         name: 'password',
@@ -36,11 +45,40 @@ const formStructure: FormField[] = [
         hint: 'Enter a strong password',
     },
     {
+        type: 'select',
+        label: 'Gender',
+        name: 'gender',
+        defaultValue: '',
+        required: true,
+        hint: 'Select a Gender',
+        options: [
+            { label: 'Male', value: 'male' },
+            { label: 'Female', value: 'female' },
+            { label: 'Other', value: 'other' },
+        ],
+    },
+    {
         type: 'checkbox',
         label: 'Subscribe to Newsletter',
         name: 'subscribe',
         defaultValue: false,
-        required: false,
+        required: true,
+    },
+    {
+        type: 'button',
+        label: 'Submit',
+        name: 'submit',
+    },
+];
+
+export const healthCheck: FormField[] = [
+    {
+        type: 'text',
+        label: 'Cluster URL',
+        name: 'clusterURL',
+        defaultValue: '',
+        required: true,
+        hint: 'Enter Cluster URL',
     },
     {
         type: 'button',

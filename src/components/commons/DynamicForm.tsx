@@ -8,10 +8,14 @@ import {
     FormControlLabel,
     FormHelperText,
     Box,
+    Select,
 } from '@mui/material';
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
 
 interface FormField {
-    type: 'text' | 'number' | 'email' | 'password' | 'checkbox' | 'button';
+    type: 'text' | 'number' | 'email' | 'password' | 'checkbox' | 'button' | 'select';
     label: string;
     name: string;
     defaultValue?: string | number | boolean;
@@ -75,6 +79,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formStructure = [], onSubmit 
                                         />
                                     }
                                     label={field.label}
+                                    required={field.required}
                                 />
                             );
                         case 'button':
@@ -82,6 +87,24 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formStructure = [], onSubmit 
                                 <Button key={field.name} type="submit" variant="contained">
                                     {field.label}
                                 </Button>
+                            );
+                        case 'select':
+                            return (
+                              <FormControl key={field.name} fullWidth>
+                                  <InputLabel>{field.label}</InputLabel>
+                                  <Select
+                                      name={field.name}
+                                      value={formData[field.name] || field.defaultValue || ''}
+                                      label={field.label}
+                                      required={field.required}
+                                      onChange={handleChange}
+                                  >
+                                      {field.options?.map((option, index) => (
+                                          <MenuItem key={index} value={option.value}>{option.label}</MenuItem>
+                                      ))}
+                                  </Select>
+                                  {field.hint && <FormHelperText>{field.hint}</FormHelperText>}
+                              </FormControl>
                             );
                         default:
                             return null;
