@@ -4,15 +4,9 @@
 // import Box from '@mui/material/Box';
 // import Link from '@mui/material/Link';
 // import NextLink from 'next/link';
-// import Executor from "@/components/Executor";
-// import Form from "@/components/ui/Form";
-// import DynamicForm from "@/components/commons/DynamicForm";
+// import {Skeleton} from "@mui/material";
 //
 // export default function Home() {
-//     const handleSubmit = (formData: Record<string, any>) => {
-//         console.log('Form Data Submitted:', formData);
-//         // Perform form submission logic here
-//     };
 //   return (
 //     <Container maxWidth="lg">
 //       <Box
@@ -30,19 +24,33 @@
 //         <Link href="/about" color="secondary" component={NextLink}>
 //           Go to the about page
 //         </Link>
+//           <Typography>
+//
+//               What is Lorem Ipsum?
+//               Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+//               Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+//               when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+//               It has survived not only five centuries, but also the leap into electronic typesetting,
+//               remaining essentially unchanged. It was popularised in the 1960s with the release of
+//               Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+//           </Typography>
+//           <Skeleton animation="wave" variant="rectangular" width={210} height={118} />
+//           <Skeleton animation="wave" variant="rectangular" width={210} height={118} />
+//           <Skeleton animation="wave" variant="rectangular" width={210} height={118} />
+//           <Skeleton animation="wave" variant="rectangular" width={210} height={118} />
+//           <Skeleton animation="wave" variant="rectangular" width={210} height={118} />
+//
 //       </Box>
-//         <Executor/>
-//         <Form/>
-//         <DynamicForm formStructure={formStructure} onSubmit={handleSubmit} />
 //     </Container>
 //   );
 // }
 "use client"
 
-import DynamicForm from '../components/commons/DynamicForm';
+import DynamicForm from '../utils/DynamicForm';
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import {executorForm, healthCheck} from "@/model/formStructure";
+import Typography from "@mui/material/Typography";
 
 export default function Home() {
     const handleSubmit = (formData: Record<string, any>) => {
@@ -91,19 +99,21 @@ export default function Home() {
         <Box
             sx={{
                 my: 4,
-                // display: 'flex',
+                display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
             }}
         >
-            <h1>TAAS Executor</h1>
+            <Typography variant="h4" fontWeight="bold">
+                TAAS Executor
+            </Typography>
             <DynamicForm formStructure={executorForm} onSubmit={handleSubmit} />
         </Box>
             <Box
                 sx={{
                     my: 4,
-                    // display: 'flex',
+                    display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center',
                     alignItems: 'center',

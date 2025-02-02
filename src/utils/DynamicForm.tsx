@@ -8,7 +8,7 @@ import {
     FormControlLabel,
     FormHelperText,
     Box,
-    Select,
+    Select, SelectChangeEvent,
 } from '@mui/material';
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -21,15 +21,17 @@ interface FormField {
     defaultValue?: string | number | boolean;
     required?: boolean;
     hint?: string;
+    disabled?: boolean;
     options?: { label: string; value: string }[];
 }
 
 interface DynamicFormProps {
     formStructure?: FormField[]; // Make the prop optional
     onSubmit: (formData: Record<string, any>) => void;
+    disabled?: boolean;
 }
 
-const DynamicForm: React.FC<DynamicFormProps> = ({ formStructure = [], onSubmit }) => {
+const DynamicForm: React.FC<DynamicFormProps> = ({ formStructure = [], onSubmit, disabled }) => {
     const [formData, setFormData] = useState<Record<string, any>>({});
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,6 +41,15 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formStructure = [], onSubmit 
             [name]: type === 'checkbox' ? checked : value,
         });
     };
+
+    const handleSelectChange = (event: SelectChangeEvent<string>) => {
+        const { name, value } = event.target;
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
+
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -84,7 +95,13 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formStructure = [], onSubmit 
                             );
                         case 'button':
                             return (
-                                <Button key={field.name} type="submit" variant="contained">
+                                <Button
+                                    key={field.name}
+                                    type="submit"
+                                    variant="contained"
+                                    disabled={disabled} // Disable button based on prop
+                                    style={{ opacity: disabled ? 0.7 : 1, cursor: disabled ? 'not-allowed' : 'pointer' }}
+                                >
                                     {field.label}
                                 </Button>
                             );
@@ -97,7 +114,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formStructure = [], onSubmit 
                                       value={formData[field.name] || field.defaultValue || ''}
                                       label={field.label}
                                       required={field.required}
-                                      onChange={handleChange}
+                                      onChange={handleSelectChange}
                                   >
                                       {field.options?.map((option, index) => (
                                           <MenuItem key={index} value={option.value}>{option.label}</MenuItem>

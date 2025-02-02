@@ -1,6 +1,5 @@
 "use client"
 
-
 interface FormField {
     type: 'text' | 'number' | 'email' | 'password' | 'checkbox' | 'button' | 'select';
     label: string;
