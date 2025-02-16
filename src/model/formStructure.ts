@@ -8,67 +8,63 @@ interface FormField {
     required?: boolean;
     hint?: string;
     options?: { label: string; value: string }[]; // For dropdowns or radio buttons
+    validate?: (value: any) => string | undefined; // New validation function
+}
+interface FormStep {
+    label: string;
+    description?: string;
+    fields: FormField[];
 }
 
-export const executorForm: FormField[] = [
-    {
-        type: 'text',
-        label: 'Full Name',
-        name: 'fullName',
-        defaultValue: '',
-        required: true,
-        hint: 'Enter your full name',
-    },
-    {
-        type: 'email',
-        label: 'Email',
-        name: 'email',
-        defaultValue: '',
-        required: true,
-        hint: 'Enter your email address',
-    },
-    {
-        type: 'text',
-        label: 'Tag',
-        name: 'Tag',
-        defaultValue: '',
-        required: true,
-        hint: 'Enter your email address',
-    },
-    {
-        type: 'password',
-        label: 'Password',
-        name: 'password',
-        defaultValue: '',
-        required: true,
-        hint: 'Enter a strong password',
-    },
-    {
-        type: 'select',
-        label: 'Gender',
-        name: 'gender',
-        defaultValue: '',
-        required: true,
-        hint: 'Select a Gender',
-        options: [
-            { label: 'Male', value: 'male' },
-            { label: 'Female', value: 'female' },
-            { label: 'Other', value: 'other' },
-        ],
-    },
-    {
-        type: 'checkbox',
-        label: 'Subscribe to Newsletter',
-        name: 'subscribe',
-        defaultValue: false,
-        required: true,
-    },
-    {
-        type: 'button',
-        label: 'Submit',
-        name: 'submit',
-    },
-];
+export interface FormStructure {
+    steps: FormStep[];
+}
+
+// Updated example form structure with steps
+export const executorForm: FormStructure = {
+    steps: [
+        {
+            label: 'Personal Information',
+            description: 'Enter your personal details',
+            fields: [
+                {
+                    type: 'text',
+                    label: 'Full Name',
+                    name: 'fullName',
+                    required: true,
+                    hint: 'Enter your full name',
+                },
+                {
+                    type: 'email',
+                    label: 'Email',
+                    name: 'email',
+                    required: true,
+                },
+            ]
+        },
+        {
+            label: 'Account Settings',
+            description: 'Configure your account preferences',
+            fields: [
+                {
+                    type: 'password',
+                    label: 'Password',
+                    name: 'password',
+                    required: true,
+                },
+                {
+                    type: 'select',
+                    label: 'Gender',
+                    name: 'gender',
+                    options: [
+                        { label: 'Male', value: 'male' },
+                        { label: 'Female', value: 'female' },
+                    ],
+                },
+            ]
+        }
+    ]
+};
 
 export const healthCheck: FormField[] = [
     {
@@ -84,4 +80,8 @@ export const healthCheck: FormField[] = [
         label: 'Submit',
         name: 'submit',
     },
+];
+
+export const autoForm: FormField[] = [
+    { type: 'email', name: 'email', label: 'Email' }
 ];

@@ -6,17 +6,23 @@ import theme from '@/theme';
 import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
 import NavBar from "@/components/NavBar";
 
-export default function RootLayout(props: { children: React.ReactNode }) {
+export default function RootLayout({
+                                    children
+                                  }: {
+  children: React.ReactNode
+}) {
   return (
     <html lang="en" suppressHydrationWarning>
+    <head>
+      <InitColorSchemeScript attribute="class" /><title>TAAS</title>
+    </head>
       <body>
-        <InitColorSchemeScript attribute="class" />
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
           <ThemeProvider theme={theme}>
             {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
             <CssBaseline />
             <NavBar />
-            {props.children}
+            {children}
           </ThemeProvider>
         </AppRouterCacheProvider>
       </body>

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
     AppBar,
     Box,
@@ -56,13 +56,18 @@ const hasSubMenu = (item: PageItem): item is PageItem & { subMenu: SubMenuItem[]
 };
 
 export default function NavBar() {
+    const [mounted, setMounted] = useState(false);
     const router = useRouter();
     const [anchorElNav, setAnchorElNav] = useState<HTMLElement | null>(null);
     const [anchorElUser, setAnchorElUser] = useState<HTMLElement | null>(null);
     const [anchorElTools, setAnchorElTools] = useState<HTMLElement | null>(null);
 
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
     const handleNavigation = (path?: string) => {
-        if (path) {
+        if (mounted && path) {
             router.push(path);
             setAnchorElNav(null);
             setAnchorElUser(null);
